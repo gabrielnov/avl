@@ -30,16 +30,6 @@ void readFile(ArvoreBST *bst, ArvoreAVL *avl){
 	    	
 	    	substring(line, stringArray);
 
-			//algumas linhas possuem o valor em branco ou inválido, isso causa exceção na conversão
-			try{
-				// stringArray[6].erase(std::remove(stringArray[6].begin(), stringArray[6].end(), '.'), stringArray[6].end());
-				// std::replace(stringArray[6].begin(), stringArray[6].end(), ',', '.');
-				// salarioBruto = std::stof(stringArray[6]);
-			} 
-			catch( ... ){
-				salarioBruto = 0.0;
-			}
-			
 
 	    	Title *t = new Title();
 
@@ -60,6 +50,7 @@ void readFile(ArvoreBST *bst, ArvoreAVL *avl){
             t->setTmdbScore(stringArray[14]);
 	    	
 			bst->inserir(nome, t);
+			avl->inserir(t);
 	    }
 
 	f.close();
@@ -86,34 +77,34 @@ void substring(std::string s, std::string v[15]){
 	}
 }
 
-void escreverLinha(Node* no, std::fstream *f)
+void escreverLinha(AVLNode* no, std::fstream *f)
 {
     if(no != NULL)
     {
-        escreverLinha(no->getEsq(), f);
+        escreverLinha(no->getLeft(), f);
         
-		*f << no->getTitulo()->getId() << ","
-		<< no->getTitulo()->getTitulo() << ","
-		<< no->getTitulo()->getShowType() << ","
-		<< no->getTitulo()->getDescription() << ","
-		<< no->getTitulo()->getReleaseYear() << ","
-		<< no->getTitulo()->getAgeCertification() << ","
-		<< no->getTitulo()->getRuntime() << ","
-		<< no->getTitulo()->getGenres() << ","
-		<< no->getTitulo()->getProductionCountries() << ","
-		<< no->getTitulo()->getSeasons() << ","
-		<< no->getTitulo()->getImdbId() << ","
-		<< no->getTitulo()->getImdbScore() << ","
-		<< no->getTitulo()->getImdbVotes() << ","
-		<< no->getTitulo()->getTmdbPopularity() << ","
-		<< no->getTitulo()->getTmdbScore();
+		*f << no->getData()->getId() << ","
+		<< no->getData()->getTitulo() << ","
+		<< no->getData()->getShowType() << ","
+		<< no->getData()->getDescription() << ","
+		<< no->getData()->getReleaseYear() << ","
+		<< no->getData()->getAgeCertification() << ","
+		<< no->getData()->getRuntime() << ","
+		<< no->getData()->getGenres() << ","
+		<< no->getData()->getProductionCountries() << ","
+		<< no->getData()->getSeasons() << ","
+		<< no->getData()->getImdbId() << ","
+		<< no->getData()->getImdbScore() << ","
+		<< no->getData()->getImdbVotes() << ","
+		<< no->getData()->getTmdbPopularity() << ","
+		<< no->getData()->getTmdbScore();
 		
 		
-        escreverLinha(no->getDir(), f);
+        escreverLinha(no->getRight(), f);
     }
 }
 
-void saveFile(ArvoreBST *bst){
+void saveFile(ArvoreAVL *avl){
     std::string caminho;
     std::fstream f;
 	
@@ -126,7 +117,7 @@ void saveFile(ArvoreBST *bst){
     << "run_time,genres,\n";
 	
 	std::cout << "escrevendo linhas no arquivo " << caminho << "..." << std::endl;
-	escreverLinha(bst->getRaiz(), &f);
+	escreverLinha(avl->getRoot(), &f);
     
     f.close();
     

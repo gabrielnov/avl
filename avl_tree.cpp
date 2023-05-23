@@ -10,6 +10,10 @@ ArvoreAVL::~ArvoreAVL()
  
 }
 
+AVLNode* ArvoreAVL::getRoot(){
+    return root;
+}
+
 /*Fator de Balanceamento*/
 int ArvoreAVL::getBalance(AVLNode *N) 
 { 

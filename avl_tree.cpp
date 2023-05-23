@@ -62,18 +62,18 @@ int ArvoreAVL::qtNodes(AVLNode* no)
 	return qtleft + qtright + 1;
 }
 
-void ArvoreAVL::inserir (int valor)
+void ArvoreAVL::inserir (Title *t)
 {
-    root = inserir(root,valor);
+    root = inserir(root,t);
 }
 
-AVLNode* ArvoreAVL::inserir(AVLNode* node, int valor)
+AVLNode* ArvoreAVL::inserir(AVLNode* node, Title *t)
 {
     if (node == NULL)
-       	return new AVLNode(valor);
-    if (valor < node->getData())
+       	return new AVLNode(t);
+    if (t->getId() < node->getData()->getId())
     {
-            node->setLeft(inserir(node->getLeft(), valor));
+            node->setLeft(inserir(node->getLeft(), t));
             if( height( node->getRight() ) - height( node->getLeft() ) == -2 ) //FB = HR - HL
             /*
                     se FB > 1 então:
@@ -83,7 +83,7 @@ AVLNode* ArvoreAVL::inserir(AVLNode* node, int valor)
 							rotação simples à esquerda                    
             */
             {
-                if(  valor < node->getLeft()->getData() ) //Ao inserir o nó a esquerda, sub-árvore da esquerda de node terá FB < 0
+                if(  t < node->getLeft()->getData() ) //Ao inserir o nó a esquerda, sub-árvore da esquerda de node terá FB < 0
                      {
                         node = rotateR( node ); //Rotação Simples para Direita
                      }
@@ -94,9 +94,9 @@ AVLNode* ArvoreAVL::inserir(AVLNode* node, int valor)
     }
     else
     {
-        if (valor > node->getData())
+        if (t->getId() > node->getData()->getId())
             {
-                    node->setRight(inserir(node->getRight(),valor));
+                    node->setRight(inserir(node->getRight(),t));
                     if( height( node->getRight() ) - height( node->getLeft() ) == 2 ) //FB = HR - HL
                     /*
                     se FB > 1 então:
@@ -106,7 +106,7 @@ AVLNode* ArvoreAVL::inserir(AVLNode* node, int valor)
 							rotação simples à esquerda                    
                     */
                     {
-                        if( valor > node->getRight()->getData()) //Ao inserir o nó a direita, sub-árvore da direita de node terá FB > 0
+                        if( t > node->getRight()->getData()) //Ao inserir o nó a direita, sub-árvore da direita de node terá FB > 0
                             node = rotateL( node ); //Rotação Simples para Esquerda
                         else //Ao inserir o nó a esquerda, sub-árvore da direita de node terá FB < 0
                             node = rotateRL( node ); //Rotação Dupla para Esquerda
@@ -115,7 +115,6 @@ AVLNode* ArvoreAVL::inserir(AVLNode* node, int valor)
 
             }
     }
-    std::cout << "\nMudando o FB do node -> " << node->getData() << " para " << (maximo( height(node->getLeft()), height(node->getRight()) ) + 1) << std::endl;
     node->setHeight(maximo( height(node->getLeft()), height(node->getRight()) ) + 1);
 
     return node;
@@ -190,19 +189,19 @@ AVLNode * ArvoreAVL::rightRotate(AVLNode *y)
 
 
 // **** Metodo que remove um elemento da Arvore ****
-void ArvoreAVL::remove (int valor)
+void ArvoreAVL::remove (std::string id)
 {
-    root = remove(root,valor);
+    root = remove(root,id);
 }
 
-AVLNode* ArvoreAVL::remove(AVLNode* root, int key) 
+AVLNode* ArvoreAVL::remove(AVLNode* root, std::string key) 
 { 
     if (root == NULL)         
         return nullptr;
   
-    if ( key < root->getData() ) 
+    if ( key < root->getData()->getId() ) 
         root->setLeft(remove(root->getLeft(), key));    
-    else if( key > root->getData()) 
+    else if( key > root->getData()->getId()) 
         root->setRight(remove(root->getRight(), key)); 
     else
     { 
@@ -225,7 +224,7 @@ AVLNode* ArvoreAVL::remove(AVLNode* root, int key)
         {              
             AVLNode* temp = minimo(root->getRight()); //busca pelo menor dos maiores            
             root->setData(temp->getData());             
-            root->setRight(remove(root->getRight(),temp->getData())); 
+            root->setRight(remove(root->getRight(),temp->getData()->getId())); 
         } 
     }
  

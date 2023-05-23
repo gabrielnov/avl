@@ -1,14 +1,14 @@
-#include "bst.h"
+#include "bst_tree.h"
 #include <iostream>
 
-void ArvoreBST::inserir(std::string chave, Title *p){
+void ArvoreBST::inserir(std::string chave, Title *t){
         if(raiz == NULL) 
-            raiz = new Node(chave, p); 
+            raiz = new BSTNode(chave, t); 
         else
-            inserirAux(raiz, chave, p);
+            inserirAux(raiz, chave, t);
 }
 
- void ArvoreBST::inserirAux(Node *no, std::string chave, Title *p)
+ void ArvoreBST::inserirAux(BSTNode *no, std::string chave, Title *p)
     {
         // se for menor, ent�o insere na sub-�rvore � esquerda
         if(chave < no->getChave())
@@ -16,7 +16,7 @@ void ArvoreBST::inserir(std::string chave, Title *p){
             // verifica se n�o tem filho a esquerda: achou local de inser��o 
             if(no->getEsq() == NULL)
             {
-                Node *novo_no = new Node(chave, p);
+                BSTNode *novo_no = new BSTNode(chave, p);
                 no->setEsq(novo_no); // add o novo_no � esquerda do n� atual
             }
             else
@@ -31,7 +31,7 @@ void ArvoreBST::inserir(std::string chave, Title *p){
             // verifica se n�o tem filho a direita: achou local de inser��o
             if(no->getDir() == NULL)
             {
-                Node *novo_no = new Node(chave, p);
+                BSTNode *novo_no = new BSTNode(chave, p);
                 no->setDir(novo_no); // add o novo_no � direita do n� atual
             }
             else
@@ -44,7 +44,7 @@ void ArvoreBST::inserir(std::string chave, Title *p){
         // n�o pode existir 2 chaves iguais na nossa BST
     }
 
-void ArvoreBST::emOrdem(Node* no)
+void ArvoreBST::emOrdem(BSTNode* no)
 {
     if(no != NULL)
     {
@@ -54,7 +54,7 @@ void ArvoreBST::emOrdem(Node* no)
     }
 }
 
-void ArvoreBST::preOrdem(Node* no)
+void ArvoreBST::preOrdem(BSTNode* no)
     {
     if(no != NULL)
     {
@@ -64,7 +64,7 @@ void ArvoreBST::preOrdem(Node* no)
     }
 }
 
-void ArvoreBST::posOrdem(Node* no)
+void ArvoreBST::posOrdem(BSTNode* no)
 {
     if(no != NULL)
     {
@@ -74,7 +74,7 @@ void ArvoreBST::posOrdem(Node* no)
     }
 }
 
-Node* ArvoreBST::Pesquisar (Node* r, std::string k)
+BSTNode* ArvoreBST::Pesquisar (BSTNode* r, std::string k)
 {
     if (r == NULL || r->getChave() == k)
         return r;
@@ -84,7 +84,7 @@ Node* ArvoreBST::Pesquisar (Node* r, std::string k)
         return Pesquisar(r->getDir(), k);
 }
 
-void ArvoreBST::LimparArvore (Node* no)
+void ArvoreBST::LimparArvore (BSTNode* no)
 {
     if(no != NULL){
     	LimparArvore(no->getEsq());
@@ -99,13 +99,13 @@ void ArvoreBST::auxLimpar(){
 	raiz = NULL;
 }
 
-int ArvoreBST::contarNos(Node* atual)
+int ArvoreBST::contarNos(BSTNode* atual)
 {
     if(atual == NULL)  return 0;
     else return ( 1 + contarNos(atual->getEsq()) + contarNos(atual->getDir()));
 }
 
- int ArvoreBST::altura(Node* atual)
+ int ArvoreBST::altura(BSTNode* atual)
 {
     if(atual == NULL)
         return -1; //�rvore ou sub-�rvore vazia: altura = -1
@@ -123,7 +123,7 @@ int ArvoreBST::contarNos(Node* atual)
     }
 }
 
-Node* ArvoreBST::excluir(Node* t, std::string key){
+BSTNode* ArvoreBST::excluir(BSTNode* t, std::string key){
         
         //Arvore t � vazia
         if (t == NULL) 
@@ -145,13 +145,13 @@ Node* ArvoreBST::excluir(Node* t, std::string key){
             else 
                 //Caso2: tem apenas um filho, a esquerda ou a direita
                 if (t->getEsq() == NULL){
-                    Node* temp = t->getDir();
+                    BSTNode* temp = t->getDir();
                     delete(t);
                     return temp; //Faz o pai apontar para o �nico filho do n�
                 }
                 else 
                     if  (t->getDir() == NULL){
-                        Node* temp = t->getEsq();
+                        BSTNode* temp = t->getEsq();
                         delete(t);
                         return temp; //Faz o pai apontar para o �nico filho do n�
                     }
@@ -159,7 +159,7 @@ Node* ArvoreBST::excluir(Node* t, std::string key){
             //Caso3: o no a ser excluido tem 2 filhos. Vamos escolher o menor dos maiores
             //para substituir o no que sera removido. Sucessor = menor no na sub-arvore da direita
             
-            Node* temp = findMin(t->getDir()); 
+            BSTNode* temp = findMin(t->getDir()); 
             
             //Copia a chave do sucessor para o no que esta sendo removido
             t->setChave(temp->getChave());
@@ -173,14 +173,14 @@ Node* ArvoreBST::excluir(Node* t, std::string key){
         
 }
 
-  int ArvoreBST::folhas(Node *atual)
+  int ArvoreBST::folhas(BSTNode *atual)
     {
         if(atual == NULL) return 0;
         if(atual->getEsq() == NULL && atual->getDir() == NULL) return 1;
         return folhas(atual->getEsq()) + folhas(atual->getDir());
     }
 
- Node* ArvoreBST::findMin(Node* t)
+ BSTNode* ArvoreBST::findMin(BSTNode* t)
     {
         if(t == NULL)
             return NULL;
@@ -191,7 +191,7 @@ Node* ArvoreBST::excluir(Node* t, std::string key){
     }
 
 	//recursivo
-    Node* ArvoreBST::findMax(Node* t) {
+    BSTNode* ArvoreBST::findMax(BSTNode* t) {
         if(t == NULL)
             return NULL;
         else if(t->getDir() == NULL)
@@ -201,9 +201,9 @@ Node* ArvoreBST::excluir(Node* t, std::string key){
     }
 
   
-    void ArvoreBST::infs(Node* r)
+    void ArvoreBST::infs(BSTNode* r)
     {
-        Node* aux;
+        BSTNode* aux;
         std::cout << "\nInformacoes gerais da arvore: \n";
         std::cout << "\n Altura da arvore: " << altura(raiz);
         std::cout << "\n Quantidade de folhas: " << folhas(raiz);
@@ -222,7 +222,7 @@ Node* ArvoreBST::excluir(Node* t, std::string key){
   		emOrdem(raiz);
 	}
 
-	void ArvoreBST::print(Node *no, int space)
+	void ArvoreBST::print(BSTNode *no, int space)
 	{
   		if (no != NULL)
   		{	

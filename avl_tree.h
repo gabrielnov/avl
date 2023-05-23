@@ -1,5 +1,5 @@
-#ifndef __AVL_TREE__
-#define __AVL_TREE__
+#ifndef __AVL_TREE_H__
+#define __AVL_TREE_H__
 
 #include <iostream>
 #include <stdlib.h>
@@ -16,8 +16,8 @@ class ArvoreAVL
         bool isEmpty();
         int height();
         int qtNodes();
-        void inserir (int valor);
-        void remove(int valor);
+        void inserir (Title* t);
+        void remove(std::string id);
         void preOrder();
         void posOrder();
         void inOrder();      
@@ -30,8 +30,8 @@ class ArvoreAVL
         AVLNode *root;
         int height(AVLNode*);
         int qtNodes(AVLNode*);
-        AVLNode* inserir(AVLNode*, int);
-        AVLNode* remove(AVLNode*, int);
+        AVLNode* inserir(AVLNode*, Title*);
+        AVLNode* remove(AVLNode*, std::string);
         void preOrder(AVLNode *no);
         void posOrder(AVLNode *no);
         void inOrder(AVLNode *no);      

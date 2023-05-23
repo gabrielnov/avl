@@ -3,16 +3,17 @@
 #define __AVL_NODE_H__
 
 #include <stdlib.h>
+#include "title.h"
 
 class AVLNode
 {
     public:
         AVLNode();
-        AVLNode(int);
+        AVLNode(Title*);
         virtual ~AVLNode();
-        int getData();
+        Title* getData();
         int getHeight();
-        void setData(int);
+        void setData(Title*);
         void setHeight(int);
         AVLNode* getLeft();
         AVLNode* getRight();
@@ -22,11 +23,9 @@ class AVLNode
 
     private:
         AVLNode* left, *right;
-        int data;
+        Title *title;
         int height;
 };
-
-
 
 AVLNode::AVLNode()
 {
@@ -35,11 +34,11 @@ AVLNode::AVLNode()
     height = 0;
 }
 
-AVLNode::AVLNode(int valor)
+AVLNode::AVLNode(Title *valor)
 {
     left = NULL;
     right = NULL;
-    data = valor;
+    title = valor;
     height = 0;
 }
 
@@ -47,14 +46,14 @@ AVLNode::~AVLNode()
 {
 }
 
-void AVLNode::setData(int d)
+void AVLNode::setData(Title *valor)
 {
-    data = d;
+    title = valor;
 }
 
-int AVLNode::getData()
+Title* AVLNode::getData()
 {
-    return data;
+    return title;
 }
 
 void AVLNode::setLeft(AVLNode *n)

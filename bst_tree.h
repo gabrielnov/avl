@@ -32,6 +32,13 @@ public:
     int altura(BSTNode* atual);
     BSTNode *excluir(BSTNode* t, std::string key);
     int folhas(BSTNode *atual);
+    void mediaAnaliseFilme(std::string procurar, float *soma, int *filme,AVLNode *no, int choice);
+    void findMaxAnaliseFilme(std::string procurar, float *maximo, AVLNode *no,int choice, AVLNode *noMaximo);
+    void findMinAnaliseFilme(std::string procurar, float *minimo, AVLNode *no,int choice, AVLNode *noMinimo);
+    void analise1(std::string age, std::string popularity);
+    void analise2(std::string year, std::string Score);
+    void analise3(std::string country, std::string popularity);
+    void analise4(std::string year, std::string Votes);
     BSTNode* findMin(BSTNode* t);
     BSTNode* findMax(BSTNode* t);
     void infs(BSTNode* r);

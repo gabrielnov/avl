@@ -238,25 +238,25 @@ BSTNode* ArvoreBST::excluir(BSTNode* t, std::string key){
 		if (no != NULL)
   		{	
   			if(choice == 3){
-  				if(no->getTitulo()->getImdbScore() == procurar){
+  				if(no->getTitulo()->getImdbScore() != 0.0 && no->getTitulo()->getReleaseYear == procurar){
  				std::cout << no->getChave() << std::endl;
   					*soma = *soma + no->getReleaseYear();
   					*filme += 1;
 				}	
 			} else if (choice == 4){
-				if(no->getTitulo()->getageCertification() == procurar && no->getTitulo()->getImdbPopularity() == procurar){
+				if(no->getTitulo()->getAgeCertification() == procurar && no->getTitulo()->getTmdbPopularity() != 0.0){
 //  				std::cout <<e no->getChave() << std::endl;
-  					*soma = *soma + no->getImdbPopularity();
+  					*soma = *soma + no->getTmdbPopularity();
   					*filme += 1;
 				}
 			} else if (choice == 5){
-                if(no->getTitulo()->getProductionContries() == procurar && no->getTitulo()->getImdbScore() ){
+                if(no->getTitulo()->getProductionCountries() == procurar && no->getTitulo()->getImdbScore() != 0.0 ){
 				*soma = *soma + no->getImdbPopularity();
   				*filme += 1;
                 }
 			}
             } else if (choice == 6){
-                if(no->getTitulo()->getRuntime() == procurar && no->getTitulo()->getImdbVotes() ){
+                if(no->getTitulo()->getRuntime() != 0.0 && no->getTitulo()->getImdbVotes()!= 0.0){
 				*soma = *soma + no->getVotes();
   				*filme += 1;
                 }
@@ -265,11 +265,11 @@ BSTNode* ArvoreBST::excluir(BSTNode* t, std::string key){
     		findMediaAnaliseFilme(procurar, soma, filme, no->getEsq(), choice);
         }
 	
-	void ArvoreBST::findMaxAnaliseFilme(std::string procurar, float *maximo, BSTNode* no, int choice, AVLNode* noMaximo){
+	void ArvoreBST::findMaxAnaliseFilme(std::string procurar, float *maximo, BSTNode* no, int choice, BSTNode* noMaximo){
 		if (no != NULL)
   		{	
   			if(choice == 3){
-  				if(no->getTitulo()->getReleaseYear() == procurar){
+  				if(no->getTitulo()->getReleaseYear() != 0.0 && no->getTitulo()->getImdbScore() != 0.0){
   					if(no->getImdbScore() >= *maximo){
 //  						std::cout << *maximo << " ";
 //  						std::cout << no->getChave() << " " << no->getTituo()->getImdbScore() << std::endl;
@@ -277,22 +277,22 @@ BSTNode* ArvoreBST::excluir(BSTNode* t, std::string key){
 					}
 				}
 			} else if (choice == 4) {
-				if(no->getTitulo()->getageCertification() == procurar && no->getTitulo()->getImdbPopularity() == 0.0){
-  					if(no->getTitulo()->getImdbPopularity() >= *maximo){
-  						*maximo = no->getImdbPopularity();
+				if(no->getTitulo()->getAgeCertification() == procurar && no->getTitulo()->getTmdbPopularity() != 0.0){
+  					if(no->getTitulo()->getTmdbPopularity() >= *maximo){
+  						*maximo = no->getTmdbPopularity();
 					}
 				}
 			} else if (choice == 5){
-				if(no->getTitulo()->getProductionContries() == procurar && no->getTitulo()->getImdbScore() != 0.0 ){
-  					if(no->getTitulo()->getImdbPopularity() >= *maximo){
-                    *maximo = no->getImdbPopularity() >= *maximo;
+				if(no->getTitulo()->getProductionCountries() == procurar && no->getTitulo()->getImdbScore() != 0.0 ){
+  					if(no->getTitulo()->getImdbScore() >= *maximo){
+                    *maximo = no->getImdbScore() >= *maximo;
                     }
 				}
 			}
             else if (choice == 6){
-				if(no->getTitulo()->getRuntime() == procurar && no->getTitulo()->getImdbVotes() != 0.0){
+				if(no->getTitulo()->getRuntime() != 0.0 && no->getTitulo()->getImdbVotes() != 0.0){
   					if(no->getTitulo()->getImdbVotes() >= *maximo){
-                    *maximo = no->getImdbPopularity() >= *maximo;
+                    *maximo = no->getImdbVotes() >= *maximo;
                     }
 				}
 			}
@@ -301,11 +301,11 @@ BSTNode* ArvoreBST::excluir(BSTNode* t, std::string key){
   		}
 	}
 	
-	void ArvoreBST::findMinAnaliseFilme(std::string procurar, float *minimo, BSTNode* no, int choice, AvlNode* noMinimo){
+	void ArvoreBST::findMinAnaliseFilme(std::string procurar, float *minimo, BSTNode* no, int choice, BSTNode* noMinimo){
 		if (no != NULL)
   		{	
   			if(choice == 3){
-  				if(no->getTitulo()->getReleaseYear() == procurar){
+  				if(no->getTitulo()->getReleaseYear() != 0.0 && no->getTitulo()->getImdbScore()!= 0.0){
   					if(no->getTitulo()->getImdbScore() <= *minimo){
   						//std::cout << *minimo << " ";
   						//std::cout << no->getChave() << " " << no->getImdbScore() << std::endl;
@@ -313,18 +313,18 @@ BSTNode* ArvoreBST::excluir(BSTNode* t, std::string key){
 					}
 				}	
 			} else if (choice == 4){
-				if(no->getTitulo()->getageCertification() == procurar && no->getTitulo()->getImdbPopularity() != 0.0){
-  					if(no->getageCertification() <= *minimo && no->getImdbPopularity() != 0.0){
-  						*minimo = no->getImdbPopularity();
+				if(no->getTitulo()->getAgeCertification() == procurar && no->getTitulo()->getTmdbPopularity() != 0.0){
+  					if(no->getAgeCertification() <= *minimo && no->getTmdbPopularity() != 0.0){
+  						*minimo = no->getTmdbPopularity();
 					}
 				}
 			} else if (choice == 5){
-				if(no->getTitulo()->getageCertification() <= *minimo && no->getTitulo()->getImdbPopularity() != 0.0){
-  					*minimo = no->getImdbPopularity();
+				if(no->getTitulo()->getProductionCountries() == procurar && no->getTitulo()->getImdbScore() != 0.0){
+  					*minimo = no->getImdbScore();
 				}
 			}
             else if (choice == 6){
-				if(no->getTitulo()->getRuntime() <= *minimo && no->getTitulo()->getImdbVotes() != 0.0){
+				if(no->getTitulo()->getRuntime() != 0.0 && no->getTitulo()->getImdbVotes() != 0.0){
   					if(no->getImdbVotes() <= *minimo ){
                     *minimo = no->getImdbVotes() <= *minimo;
                     }

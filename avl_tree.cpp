@@ -375,27 +375,27 @@ void ArvoreAVL::print(AVLNode *no, int space)
 		if (no != NULL)
   		{	
   			if(choice == 3){
-  				if(no->getTitulo()->getImdbScore() == procurar){
+  				if(no->getTitulo()->getImdbScore() != 0.0 && no->getTitulo()->getReleaseYear()!= 0.0){
  				//std::cout << no->getChave() << std::endl;
   					*soma = *soma + no->getReleaseYear();
                     getBalance(no->getTitulo()->getImdbScore());
   					*filme += 1;
 				}	
 			} else if (choice == 4){
-				if(no->getTitulo()->getageCertification() == procurar && no->getTitulo()->getImdbPopularity() == procurar){
+				if(no->getTitulo()->getAgeCertification() == procurar && no->getTitulo()->getTmdbPopularity() != 0.0){
 //  				std::cout << no->getChave() << std::endl;
-  					*soma = *soma + nogetImdbPopularity();
+  					*soma = *soma + nogetTmdbPopularity();
   					*filme += 1;
 				}
 			} else if (choice == 5){
-                if(no->getTitulo()->getProductionContries() == procurar && no->getTitulo()->getImdbScore() ){
-				*soma = *soma + no->getImdbPopularity();
+                if(no->getTitulo()->getProductionCountries() == procurar && no->getTitulo()->getImdbScore() != 0.0 ){
+				*soma = *soma + no->getImdbScore();
   				*filme += 1;
                 }
 			}
             } else if (choice == 6){
-                if(no->getTitulo()->getRuntime() == procurar && no->getTitulo()->getImdbVotes() ){
-				*soma = *soma + no->getVotes();
+                if(no->getTitulo()->getRuntime() != 0.0 && no->getTitulo()->getImdbVotes() != 0.0 ){
+				*soma = *soma + no->getImdbVotes();
   				*filme += 1;
                 }
 			}
@@ -407,7 +407,7 @@ void ArvoreAVL::print(AVLNode *no, int space)
 		if (no != NULL)
   		{	
   			if(choice == 3){
-  				if(no->getTitulo()->getReleaseYear() == procurar){
+  				if(no->getTitulo()->getReleaseYear() == procurar && no->getTitulo()->getReleaseYear()!= 0.0){
   					if(no->getImdbScore() >= *maximo){
 //  						std::cout << *maximo << " ";
 //  						std::cout << no->getChave() << " " << no->getTituo()->getImdbScore() << std::endl;
@@ -438,12 +438,13 @@ void ArvoreAVL::print(AVLNode *no, int space)
     		findMaxAnaliseFilme(procurar, maximo, no->getLeft(), choice, noMaximo);
   		}
 	}
-	
+}
+
 	void ArvoreAvl::findMinAnaliseFilme(std::string procurar, float *minimo, AVLNode* no, int choice, AvlNode* noMinimo){
 		if (no != NULL)
   		{	
   			if(choice == 3){
-  				if(no->getTitulo()->getReleaseYear() == procurar){
+  				if(no->getTitulo()->getReleaseYear() != 0.0 && no->getTitulo()->getImdbScore() != 0.0){
   					if(no->getTitulo()->getImdbScore() <= *minimo){
   						//std::cout << *minimo << " ";
   						//std::cout << no->getChave() << " " << no->getImdbScore() << std::endl;
@@ -451,18 +452,18 @@ void ArvoreAVL::print(AVLNode *no, int space)
 					}
 				}	
 			} else if (choice == 4){
-				if(no->getTitulo()->getageCertification() == procurar && no->getTitulo()->getImdbPopularity() != 0.0){
-  					if(no->getageCertification() <= *minimo && no->getImdbPopularity() != 0.0){
-  						*minimo = no->getImdbPopularity();
+				if(no->getTitulo()->getageCertification() != 0.0 && no->getTitulo()->getTmdbPopularity() != 0.0){
+  					if(no->getageCertification() <= *minimo && no->getTmdbPopularity() != 0.0){
+  						*minimo = no->getTmdbPopularity();
 					}
 				}
 			} else if (choice == 5){
-				if(no->getTitulo()->getageCertification() <= *minimo && no->getTitulo()->getImdbPopularity() != 0.0){
+				if(no->getTitulo()->getAgeCertification() != 0.0 && no->getTitulo()->getImdbPopularity() != 0.0){
   					*minimo = no->getImdbPopularity();
 				}
 			}
             else if (choice == 6){
-				if(no->getTitulo()->getRuntime() <= *minimo && no->getTitulo()->getImdbVotes() != 0.0){
+				if(no->getTitulo()->getRuntime() != 0.0 && no->getTitulo()->getImdbVotes() != 0.0){
   					if(no->getImdbVotes() <= *minimo ){
                     *minimo = no->getImdbVotes() <= *minimo;
                     }
@@ -472,6 +473,7 @@ void ArvoreAVL::print(AVLNode *no, int space)
     		findMinAnaliseFilme(procurar, minimo, no->getLeft(), choice, noMinimo);
   		}
 	}
+}
 void ArvoreAVL::analise1(std::string age , std::string popularity ){
 		float soma = 0, *tSoma = &soma, media1 = 0, media2 = 0;
 		float maximo1 = 0, *tMaximo1 = &maximo1, minimo1, *tMinimo1 = &minimo1;

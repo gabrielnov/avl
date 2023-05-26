@@ -27,9 +27,11 @@ void readFile(ArvoreBST *bst, ArvoreAVL *avl){
 
     if (f.is_open()){
 	    while(getline(f, line) && line != ""){
-	    	
 	    	substring(line, stringArray);
-
+			
+			if (stringArray[0].size() < 3){
+				continue;
+			}
 
 	    	Title *t = new Title();
 

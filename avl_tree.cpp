@@ -78,21 +78,14 @@ AVLNode* ArvoreAVL::inserir(AVLNode* node, Title *t)
     if (t->getId() < node->getData()->getId())
     {
             node->setLeft(inserir(node->getLeft(), t));
-            if( height( node->getRight() ) - height( node->getLeft() ) == -2 ) //FB = HR - HL
-            /*
-                    se FB > 1 então:
-						se a Sub-árvore da direita tem FB < 0 então: 
-			 				rotação dupla à esquerda
-						senão:
-							rotação simples à esquerda                    
-            */
+            if( height( node->getRight() ) - height( node->getLeft() ) == -2 ) 
             {
-                if(  t < node->getLeft()->getData() ) //Ao inserir o nó a esquerda, sub-árvore da esquerda de node terá FB < 0
+                if(  t->getId() < node->getLeft()->getData()->getId() ) 
                      {
-                        node = rotateR( node ); //Rotação Simples para Direita
+                        node = rotateR( node ); 
                      }
-                 else{ //Ao inserir o nó a direita, sub-árvore da direita de node terá FB > 0
-                        node = rotateLR( node ); //Rotação Dupla para Direita
+                 else{ 
+                        node = rotateLR( node ); 
                      }
             }
     }
@@ -102,15 +95,8 @@ AVLNode* ArvoreAVL::inserir(AVLNode* node, Title *t)
             {
                     node->setRight(inserir(node->getRight(),t));
                     if( height( node->getRight() ) - height( node->getLeft() ) == 2 ) //FB = HR - HL
-                    /*
-                    se FB > 1 então:
-						se a Sub-árvore da direita tem FB < 0 então: 
-			 				rotação dupla à esquerda
-						senão:
-							rotação simples à esquerda                    
-                    */
                     {
-                        if( t > node->getRight()->getData()) //Ao inserir o nó a direita, sub-árvore da direita de node terá FB > 0
+                        if( t->getId() > node->getRight()->getData()->getId()) //Ao inserir o nó a direita, sub-árvore da direita de node terá FB > 0
                             node = rotateL( node ); //Rotação Simples para Esquerda
                         else //Ao inserir o nó a esquerda, sub-árvore da direita de node terá FB < 0
                             node = rotateRL( node ); //Rotação Dupla para Esquerda
@@ -126,7 +112,6 @@ AVLNode* ArvoreAVL::inserir(AVLNode* node, Title *t)
 
 AVLNode* ArvoreAVL::rotateR(AVLNode *node) //Rotação Simples para Direita
      {
-     	 std::cout << "Rotação Simples para Direita" << std::endl;
          AVLNode *leftSubTree = node->getLeft();
          node->setLeft(leftSubTree->getRight());
          leftSubTree->setRight( node );
@@ -137,7 +122,6 @@ AVLNode* ArvoreAVL::rotateR(AVLNode *node) //Rotação Simples para Direita
 
 AVLNode* ArvoreAVL::rotateL(AVLNode *node) //Rotação Simples para Esquerda
      {
-     	 std::cout << "Rotação Simples para Esquerda" << std::endl;
          AVLNode *rightSubTree = node->getRight();
          node->setRight(rightSubTree->getLeft());
          rightSubTree->setLeft( node );
@@ -148,14 +132,12 @@ AVLNode* ArvoreAVL::rotateL(AVLNode *node) //Rotação Simples para Esquerda
 
 AVLNode* ArvoreAVL::rotateLR(AVLNode *node) //Left-Right Rotation (LR) => Rotação Dupla para Direita: esquerda -> direita
 {
-	std::cout << "Rotação Dupla para Direita:" << std::endl; 
     node->setLeft(rotateL(node->getLeft())); //Rotação para esquerda na sub-árvore da esquerda
     return rotateR(node); //Rotação para direita no nó com o FB violado!
 }
 
 AVLNode* ArvoreAVL::rotateRL(AVLNode *node) //Right-Left Rotiation (RL) => Rotação Dupla para Esquerda: direita -> esquerda
 {
-	std::cout << "Rotação Dupla para Esquerda:" << std::endl;
     node->setRight(rotateR(node->getRight())); //Rotação para direita na sub-árvore da direita
     return rotateL(node); //Rotação para esquerda no nó com o FB violado!
 }
@@ -163,7 +145,6 @@ AVLNode* ArvoreAVL::rotateRL(AVLNode *node) //Right-Left Rotiation (RL) => Rota�
 
 AVLNode * ArvoreAVL::leftRotate(AVLNode *x) 
 { 
-	std::cout << "leftRotate" << std::endl;
     AVLNode *y = x->getRight(); 
     AVLNode *T2 = y->getLeft(); 
   
@@ -178,7 +159,6 @@ AVLNode * ArvoreAVL::leftRotate(AVLNode *x)
 
 AVLNode * ArvoreAVL::rightRotate(AVLNode *y) 
 { 
-	std::cout << "rightRotate" << std::endl;
     AVLNode *x = y->getLeft(); 
     AVLNode *T2 = x->getRight(); 
      

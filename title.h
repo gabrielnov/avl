@@ -176,8 +176,23 @@ class Title{
             tmdbScore = newTmdbScore;
         }
 
-        
+        void print(){
+            std::cout << "id: " << id <<
+            " | title: " << title <<
+            " | showType: " << showType <<
+            " | description: " << description <<
+            " | releaseYear: " << releaseYear <<
+            " | ageCertification: " << ageCertification <<
+            " | runtime: " << runtime <<
+            " | genres: " << genres << 
+            " | productionCountries: " << productionCountries <<
+            " | seasons: " << seasons << 
+            " | imdbId: " << imdbId <<
+            " | imdbScore: " << imdbScore <<
+            " | imdbVotes: " << imdbVotes <<
+            " | tmdbPopularity: " << tmdbPopularity <<
+            " | tmdbScore: " << tmdbScore << "\n";
+        }
 };
-
 
 #endif

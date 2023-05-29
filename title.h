@@ -2,6 +2,7 @@
 #define __TITULO_H__
 
 #include <string>
+#include <iostream>
 #include "stdlib.h"
 
 class Title{

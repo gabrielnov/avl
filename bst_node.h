@@ -25,7 +25,7 @@ public:
         esq = NULL;
         dir = NULL;
     }
-    Title* getTitulo(){return this->title;}
+    Title* getData(){return this->title;}
     std::string getChave(){return chave;}
     BSTNode* getEsq(){return esq;}
     BSTNode* getDir(){return dir;}

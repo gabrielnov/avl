@@ -2,6 +2,7 @@
 #define __MENU_H__
 
 #include "file.h"
+#include "grafico.h"
 
 void menu(ArvoreAVL* avl, ArvoreBST* bst);
 void printMenu();

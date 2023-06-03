@@ -34,7 +34,7 @@ private:
   void preOrder(AVLNode *no);
   void posOrder(AVLNode *no);
   void inOrder(AVLNode *no);
-  void mediaAnaliseFilme(std::string procurar, float *soma, int *filme,AVLNode *no, int choice);
+  void findMediaAnaliseFilme(std::string procurar, float *soma, int *filme,AVLNode *no, int choice);
   void findMaxAnaliseFilme(std::string procurar, float *maximo, AVLNode *no,int choice, AVLNode *noMaximo);
   void findMinAnaliseFilme(std::string procurar, float *minimo, AVLNode *no,int choice, AVLNode *noMinimo);
   AVLNode *rotateR(AVLNode *);

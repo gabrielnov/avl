@@ -371,47 +371,47 @@ void ArvoreAVL::print(AVLNode *no, int space)
     print(no->getLeft(), space + 5);
   }
 }
-	void ArvoreAVL::mediaAnaliseFilme(std::string procurar, float *soma, int* filme, AVLNode *no, int choice){
+	void ArvoreAVL::findMediaAnaliseFilme(std::string procurar, float *soma, int* filme, AVLNode *no, int choice){
 		if (no != NULL)
   		{	
   			if(choice == 3){
-  				if(no->getTitulo()->getImdbScore() == procurar){
- 				std::cout << no->getChave() << std::endl;
+  				if(no->getTitulo()->getImdbScore() != 0.0 && no->getTitulo()->getReleaseYear()!= 0.0){
+ 				//std::cout << no->getChave() << std::endl;
   					*soma = *soma + no->getReleaseYear();
+                    getBalance(no->getTitulo()->getImdbScore());
   					*filme += 1;
 				}	
 			} else if (choice == 4){
-				if(no->getTitulo()->getageCertification() == procurar && no->getTitulo()->getImdbPopularity() == procurar){
+				if(no->getTitulo()->getAgeCertification() == procurar && no->getTitulo()->getTmdbPopularity() != 0.0){
 //  				std::cout << no->getChave() << std::endl;
-  					*soma = *soma + nogetImdbPopularity();
+  					*soma = *soma + nogetTmdbPopularity();
   					*filme += 1;
 				}
 			} else if (choice == 5){
-                if(no->getTitulo()->getProductionContries() == procurar && no->getTitulo()->getImdbScore() ){
-				*soma = *soma + no->getImdbPopularity();
+                if(no->getTitulo()->getProductionCountries() == procurar && no->getTitulo()->getImdbScore() != 0.0 ){
+				*soma = *soma + no->getImdbScore();
   				*filme += 1;
                 }
 			}
             } else if (choice == 6){
-                if(no->getTitulo()->getRuntime() == procurar && no->getTitulo()->getImdbVotes() ){
-				*soma = *soma + no)->getVotes();
+                if(no->getTitulo()->getRuntime() != 0.0 && no->getTitulo()->getImdbVotes() != 0.0 ){
+				*soma = *soma + no->getImdbVotes();
   				*filme += 1;
                 }
 			}
-    		mediaAnaliseFilme(procurar, soma, filme, no->getRight(), choice);
-    		mediaAnaliseFilme(procurar, soma, filme, no->getLeft(), choice);
+    		findMediaAnaliseFilme(procurar, soma, filme, no->getRight(), choice);
+    		findMediaAnaliseFilme(procurar, soma, filme, no->getLeft(), choice);
         }
-  	}
 	
 	void ArvoreAVL::findMaxAnaliseFilme(std::string procurar, float *maximo, AVLNode* no, int choice, AVLNode* noMaximo){
 		if (no != NULL)
   		{	
   			if(choice == 3){
-  				if(no->getReleaseYear() == procurar){
+  				if(no->getTitulo()->getReleaseYear() == procurar && no->getTitulo()->getReleaseYear()!= 0.0){
   					if(no->getImdbScore() >= *maximo){
 //  						std::cout << *maximo << " ";
 //  						std::cout << no->getChave() << " " << no->getTituo()->getImdbScore() << std::endl;
-  						*maximo = no)->getImdbScore();
+  						*maximo = no->getImdbScore();
 					}
 				}
 			} else if (choice == 4) {
@@ -430,152 +430,153 @@ void ArvoreAVL::print(AVLNode *no, int space)
             else if (choice == 6){
 				if(no->getTitulo()->getRuntime() == procurar && no->getTitulo()->getImdbVotes() != 0.0){
   					if(no->getTitulo()->getImdbVotes() >= *maximo){
-                    *maximo = no)->getImdbPopularity() >= *maximo;
+                    *maximo = no->getImdbPopularity() >= *maximo;
                     }
-				}
+				
 			}
     		findMaxAnaliseFilme(procurar, maximo, no->getRight(), choice, noMaximo);
     		findMaxAnaliseFilme(procurar, maximo, no->getLeft(), choice, noMaximo);
   		}
 	}
-	
+}
+
 	void ArvoreAvl::findMinAnaliseFilme(std::string procurar, float *minimo, AVLNode* no, int choice, AvlNode* noMinimo){
 		if (no != NULL)
   		{	
   			if(choice == 3){
-  				if(no->getTitulo()->getReleaseYear() == procurar){
+  				if(no->getTitulo()->getReleaseYear() != 0.0 && no->getTitulo()->getImdbScore() != 0.0){
   					if(no->getTitulo()->getImdbScore() <= *minimo){
-  						std::cout << *minimo << " ";
-  						std::cout << no->getChave() << " " << no->getImdbScore() << std::endl;
+  						//std::cout << *minimo << " ";
+  						//std::cout << no->getChave() << " " << no->getImdbScore() << std::endl;
   						*minimo = no->getImdbScore();
 					}
 				}	
 			} else if (choice == 4){
-				if(no->getTitulo()->getageCertification() == procurar && no->getTitulo()->getImdbPopularity() != 0.0){
-  					if(no->getageCertification() <= *minimo && no->getImdbPopularity() != 0.0){
-  						*minimo = no->getImdbPopularity();
+				if(no->getTitulo()->getageCertification() != 0.0 && no->getTitulo()->getTmdbPopularity() != 0.0){
+  					if(no->getageCertification() <= *minimo && no->getTmdbPopularity() != 0.0){
+  						*minimo = no->getTmdbPopularity();
 					}
 				}
 			} else if (choice == 5){
-				if(no->getTitulo()->getageCertification() <= *minimo && no->getTitulo()->getImdbPopularity() != 0.0){
+				if(no->getTitulo()->getAgeCertification() != 0.0 && no->getTitulo()->getImdbPopularity() != 0.0){
   					*minimo = no->getImdbPopularity();
 				}
 			}
             else if (choice == 6){
-				if(no->getTitulo()->getRuntime() <= *minimo && no->getTitulo()->getImdbVotes() != 0.0){
+				if(no->getTitulo()->getRuntime() != 0.0 && no->getTitulo()->getImdbVotes() != 0.0){
   					if(no->getImdbVotes() <= *minimo ){
                     *minimo = no->getImdbVotes() <= *minimo;
                     }
-				}
+				
 			}
     		findMinAnaliseFilme(procurar, minimo, no->getRight(), choice, noMinimo);
     		findMinAnaliseFilme(procurar, minimo, no->getLeft(), choice, noMinimo);
   		}
 	}
-void ArvoreAVL:: analise1(std::string:age , std::string popularity ){
+}
+void ArvoreAVL::analise1(std::string age , std::string popularity ){
 		float soma = 0, *tSoma = &soma, media1 = 0, media2 = 0;
 		float maximo1 = 0, *tMaximo1 = &maximo1, minimo1, *tMinimo1 = &minimo1;
 		float maximo2 = 0, *tMaximo2 = &maximo2, minimo2, *tMinimo2 = &minimo2;
     int filmes = 0, *tfilmes = &filmes;
 }
   
-}
 
-void ArvoreAVL:: analise2(std::string:year , std::string Score ){
+void ArvoreAVL::analise2(std::string year , std::string Score ){
 		float soma = 0, *tSoma = &soma, media1 = 0, media2 = 0;
 		float maximo1 = 0, *tMaximo1 = &maximo1, minimo1, *tMinimo1 = &minimo1;
 		float maximo2 = 0, *tMaximo2 = &maximo2, minimo2, *tMinimo2 = &minimo2;
     int filmes = 0, *tfilmes = &filmes;
 
-mediaAnaliseFilme(year,tsoma,tfilmes,root,3);
+findMediaAnaliseFilme(year,tSoma,tfilmes,root,3);
 media1 = soma/filmes;
-*pfilmes= 0; &filmes=0.0;
-mediaAnalise(Score, tSoma, tfilmes, root, 3);
+*Tfilmes= 0; &filmes=0.0;
+findMediaAnalise(Score, tSoma, tfilmes, root, 3);
 media2 = soma/filmes;
 
 findMaxAnalise(year, tMaximo1, root, 3, nullptr);
 minimo1 = maximo1;
-findMinAnalise(year,TMinimo1, root, 3, nullptr);
+findMinAnalise(year,tMinimo1, root, 3, nullptr);
 	
 		//Max e Min para cargo2 
-findMaxAnalise(Score, tMaximo2, raiz, 3, nullptr);
+findMaxAnalise(Score, tMaximo2, root, 3, nullptr);
 minimo2 = maximo2;
-findMinAnalise(Score, tMinimo2, raiz, 3, nullptr);
+findMinAnalise(Score, tMinimo2, root, 3, nullptr);
 
 //print dos resultados
-std::cout<< "min do year" << minimo 1 ;
-std::cout<< "medio do year" << media 1; 
-std::cout<< "min do year" << maximo 1; 
+std::cout<< "min do year" << minimo1 ;
+std::cout << "medio do year" << media1; 
+std::cout<< "min do year" << maximo1; 
 
-std::cout<< "min do score" << minimo 2;
-std::cout<< "medio do score" << media 2; 
-std::cout<< "min do score" << maximo 2; 
+std::cout<< "min do score" << minimo2;
+std::cout<< "medio do score" << media2; 
+std::cout<< "min do score" << maximo2; 
 
 std::cout<<"Diferença entre os dois generos"<<(media2-media1);
   
 }
 
-void ArvoreAVL:: analise3(std::string:country , std::string popularity ){
+void ArvoreAVL::analise3(std::string country , std::string popularity ){
 		float soma = 0, *tSoma = &soma, media1 = 0, media2 = 0;
 		float maximo1 = 0, *tMaximo1 = &maximo1, minimo1, *tMinimo1 = &minimo1;
 		float maximo2 = 0, *tMaximo2 = &maximo2, minimo2, *tMinimo2 = &minimo2;
     int filmes = 0, *tfilmes = &filmes;
 
-mediaAnaliseFilme(country,tsoma,tfilmes,root,3);
+findMediaAnaliseFilme(country,tSoma,tfilmes,root,3);
 media1 = soma/filmes;
-*pfilmes= 0; &filmes=0.0;
-mediaAnalise(popularity, tSoma, tfilmes, root, 3);
+*tfilmes= 0; &filmes=0.0;
+findMediaAnalise(popularity, tSoma, tfilmes, root, 3);
 media2 = soma/filmes;
 
 findMaxAnalise(country, tMaximo1, root, 3, nullptr);
 minimo1 = maximo1;
-findMinAnalise(country,TMinimo1, root, 3, nullptr);
+findMinAnalise(country,tMinimo1, root, 3, nullptr);
 	
 		//Max e Min para cargo2 
-findMaxAnalise(popularity, tMaximo2, raiz, 3, nullptr);
+findMaxAnalise(popularity, tMaximo2, root, 3, nullptr);
 minimo2 = maximo2;
-findMinAnalise(popularity, tMinimo2, raiz, 3, nullptr);
+findMinAnalise(popularity, tMinimo2, root, 3, nullptr);
 
 //print dos resultados
-std::cout<< "min do country" << minimo 1 ;
-std::cout<< "medio do country" << media 1; 
-std::cout<< "min do country" << maximo 1; 
+std::cout<< "min do country" << minimo1 ;
+std::cout<< "medio do country" << media1; 
+std::cout<< "min do country" << maximo1; 
 
-std::cout<< "min do popularity" << minimo 2;
-std::cout<< "medio do popularity" << media 2; 
-std::cout<< "min do popularity" << maximo 2; 
+std::cout<< "min do popularity" << minimo2;
+std::cout<< "medio do popularity" << media2; 
+std::cout<< "min do popularity" << maximo2; 
   
 }
 
-void ArvoreAVL:: analise4(std::string:year , std::string Votes ){
+void ArvoreAVL:: analise4(std::string year , std::string Votes ){
 		float soma = 0, *tSoma = &soma, media1 = 0, media2 = 0;
 		float maximo1 = 0, *tMaximo1 = &maximo1, minimo1, *tMinimo1 = &minimo1;
 		float maximo2 = 0, *tMaximo2 = &maximo2, minimo2, *tMinimo2 = &minimo2;
     int filmes = 0, *tfilmes = &filmes;
 
-mediaAnaliseFilme(year,tsoma,tfilmes,root,3);
+findMediaAnaliseFilme(year,tSoma,tfilmes,root,3);
 media1 = soma/filmes;
-*pfilmes= 0; &filmes=0.0;
-mediaAnalise(Votes, tSoma, tfilmes, root, 3);
+*tfilmes= 0; &filmes=0.0;
+findMediaAnalise(Votes, tSoma, tfilmes, root, 3);
 media2 = soma/filmes;
 
 findMaxAnalise(year, tMaximo1, root, 3, nullptr);
 minimo1 = maximo1;
-findMinAnalise(year,TMinimo1, root, 3, nullptr);
+findMinAnalise(year,tMinimo1, root, 3, nullptr);
 	
 		//Max e Min para cargo2 
-findMaxAnalise(Votes, tMaximo2, raiz, 3, nullptr);
+findMaxAnalise(Votes, tMaximo2, root, 3, nullptr);
 minimo2 = maximo2;
-findMinAnalise(Votes, tMinimo2, raiz, 3, nullptr);
+findMinAnalise(Votes, tMinimo2, root, 3, nullptr);
 
 //print dos resultados
-std::cout<< "min do year" << minimo 1 ;
-std::cout<< "medio do year" << media 1; 
-std::cout<< "min do year" << maximo 1; 
+std::cout<< "min do year" << minimo1 ;
+std::cout<< "medio do year" << media1; 
+std::cout<< "min do year" << maximo1; 
 
-std::cout<< "min do score" << minimo 2;
-std::cout<< "medio do score" << media 2; 
-std::cout<< "min do score" << maximo 2; 
+std::cout<< "min do score" << minimo2;
+std::cout<< "medio do score" << media2; 
+std::cout<< "min do score" << maximo2; 
 
   
 }

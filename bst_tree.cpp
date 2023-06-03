@@ -2,43 +2,50 @@
 #include <iostream>
 using namespace std;
 
-void ArvoreBST::inserir(std::string chave, Title *t){
+void ArvoreBST::inserir(std::string chave, Title *t, int *op){
+        *op += 1;
         if(raiz == NULL) 
             raiz = new BSTNode(chave, t); 
         else
-            inserirAux(raiz, chave, t);
+            inserirAux(raiz, chave, t, op);
 }
 
- void ArvoreBST::inserirAux(BSTNode *no, std::string chave, Title *p)
+ void ArvoreBST::inserirAux(BSTNode *no, std::string chave, Title *p, int *op)
     {
         // se for menor, entï¿½o insere na sub-ï¿½rvore ï¿½ esquerda
         if(chave < no->getChave())
         {
+            *op +=1;
             // verifica se nï¿½o tem filho a esquerda: achou local de inserï¿½ï¿½o 
             if(no->getEsq() == NULL)
             {
+                *op +=1;
                 BSTNode *novo_no = new BSTNode(chave, p);
                 no->setEsq(novo_no); // add o novo_no ï¿½ esquerda do nï¿½ atual
             }
             else
             {
+                *op +=1;
                 // senï¿½o, continua percorrendo recursivamente para esquerda
-                inserirAux(no->getEsq(), chave, p);
+                inserirAux(no->getEsq(), chave, p, op);
             }
         }
         // se for maior, entï¿½o insere na sub-ï¿½rvore ï¿½ direita
         else if(chave > no->getChave())
         {
+            *op +=1;
             // verifica se nï¿½o tem filho a direita: achou local de inserï¿½ï¿½o
             if(no->getDir() == NULL)
             {
+                *op +=1;
                 BSTNode *novo_no = new BSTNode(chave, p);
                 no->setDir(novo_no); // add o novo_no ï¿½ direita do nï¿½ atual
             }
             else
             {
+                *op +=1;
                 // senï¿½o, continua percorrendo recursivamente para direita
-                inserirAux(no->getDir(), chave, p);
+                inserirAux(no->getDir(), chave, p, op);
             }
         }
         // se a chave for igual a alguma presente na ï¿½rvore, nï¿½o vamos inserir
@@ -124,34 +131,40 @@ int ArvoreBST::contarNos(BSTNode* atual)
     }
 }
 
-BSTNode* ArvoreBST::excluir(BSTNode* t, std::string key){
-        
+BSTNode* ArvoreBST::excluir(BSTNode* t, std::string key, int *op){
+    *op += 1;
     //Arvore t ï¿½ vazia
     if (t == NULL) 
         return t;
     
+    *op += 1;
     if (key < t->getChave())
-        t->setEsq(excluir(t->getEsq(),key));
+        t->setEsq(excluir(t->getEsq(),key, op));
     else
-        if (key > t->getChave())
-            t->setDir(excluir(t->getDir(),key));
+        if (key > t->getChave()){
+            *op += 1;
+            t->setDir(excluir(t->getDir(),key, op));
+        }
     
     //encontramos o nï¿½ a ser removido
     else{ 
         //Caso1: o no a ser excluido nao tem filhos
         if (t->getEsq() == NULL and t->getDir() == NULL){
+            *op += 1;
         	delete(t);
             return NULL; //faz o pai apontar para NULL e o nï¿½ nï¿½o faz mais parte da BST	
 		}            	
         else 
             //Caso2: tem apenas um filho, a esquerda ou a direita
             if (t->getEsq() == NULL){
+                *op += 1;
                 BSTNode* temp = t->getDir();
                 delete(t);
                 return temp; //Faz o pai apontar para o ï¿½nico filho do nï¿½
             }
             else 
                 if  (t->getDir() == NULL){
+                    *op += 1;
                     BSTNode* temp = t->getEsq();
                     delete(t);
                     return temp; //Faz o pai apontar para o ï¿½nico filho do nï¿½
@@ -160,13 +173,13 @@ BSTNode* ArvoreBST::excluir(BSTNode* t, std::string key){
         //Caso3: o no a ser excluido tem 2 filhos. Vamos escolher o menor dos maiores
         //para substituir o no que sera removido. Sucessor = menor no na sub-arvore da direita
         
-        BSTNode* temp = findMin(t->getDir()); 
+        BSTNode* temp = findMin(t->getDir(), op); 
         
         //Copia a chave do sucessor para o no que esta sendo removido
         t->setChave(temp->getChave());
         
         //Remove da arvore o sucessor!
-        t->setDir(excluir(t->getDir(),temp->getChave()));
+        t->setDir(excluir(t->getDir(),temp->getChave(), op));
     }
     
     //retorna a raiz da arvore
@@ -181,14 +194,20 @@ int ArvoreBST::folhas(BSTNode *atual)
     return folhas(atual->getEsq()) + folhas(atual->getDir());
 }
 
-BSTNode* ArvoreBST::findMin(BSTNode* t)
+BSTNode* ArvoreBST::findMin(BSTNode* t, int *op)
 {
     if(t == NULL)
+    {
+        *op += 1;
         return NULL;
+    }
     else if(t->getEsq() == NULL)
+    {
+        *op += 1;
         return t;
+    }
     else
-        return findMin(t->getEsq());
+        return findMin(t->getEsq(), op);
 }
 
 //recursivo
@@ -211,7 +230,7 @@ void ArvoreBST::infs(BSTNode* r)
     std::cout << "\n Quantidade de Nos: " << contarNos(raiz);
     if (raiz != NULL )    // se arvore nao esta vazia
     {           
-        aux = findMin(r);
+        aux = findMin(r, NULL);
         std::cout << "\n Valor minimo: " << aux->getChave();            
         aux = findMax(r);
         std::cout << "\n Valor maximo: " << aux->getChave();
@@ -264,9 +283,6 @@ void ArvoreBST::findMediaAnaliseFilme(std::string procurar, float *procuraValor,
 void ArvoreBST::findMaxAnaliseFilme(std::string procurar, float *maximo, BSTNode* no, int choice, std::string *nomeFilmeProcurado){
     if (no != NULL) {
       	if (choice == 4){
-      		if(no->getData()->getId() == "tm25947") {
-      			cout << "gostei";
-			}
             if(no->getData()->getAgeCertification() == procurar && no->getData()->getImdbScore() != ""){
               	if(stof(no->getData()->getImdbScore()) >= *maximo){
 //              		cout << "maximo " << *maximo << endl;
@@ -321,19 +337,23 @@ void ArvoreBST::findMinAnaliseFilme(std::string procurar, float *minimo, BSTNode
 	}
 }
 
-BSTNode* ArvoreBST::pesquisar(std::string valor, BSTNode *no){
+BSTNode* ArvoreBST::pesquisar(std::string valor, BSTNode *no, int *op){
 	if(no->getData()->getId() == valor || no == nullptr){
+		*op += 1;
 		return no;
 	} else if (no->getData()->getId() < valor){
-		return pesquisar(valor, no->getDir());
+		*op += 1;
+		return pesquisar(valor, no->getDir(), op);
 	} else {
-		return pesquisar(valor, no->getEsq());
+		*op += 1;
+		return pesquisar(valor, no->getEsq(), op);
 	}
 }
 
 void ArvoreBST::analise3(std::string id1, std::string id2, BSTNode *no){ //id do filme
-	BSTNode *temp1 = pesquisar(id1, no);
-	BSTNode *temp2 = pesquisar(id2, no);
+	int n = 0;
+	BSTNode *temp1 = pesquisar(id1, no, &n);
+	BSTNode *temp2 = pesquisar(id2, no, &n);
 	std::cout << temp1->getData()->getTitulo() << " " << temp2->getData()->getTitulo();
 	
 	float imdb1 = stof(temp1->getData()->getImdbScore());
@@ -353,7 +373,8 @@ void ArvoreBST::analise3(std::string id1, std::string id2, BSTNode *no){ //id do
 
 void ArvoreBST::analise4(std::string id, BSTNode *no){ //certo
 //	posOrder(no);
-	BSTNode *temp = pesquisar(id, no);
+	int n = 0;
+	BSTNode *temp = pesquisar(id, no, &n);
 	std::string nomeFilme = temp->getData()->getTitulo();
 	std::string ageC = temp->getData()->getAgeCertification();
 	float imdbEntrada = std::stof(temp->getData()->getImdbScore());
@@ -375,7 +396,7 @@ void ArvoreBST::analise4(std::string id, BSTNode *no){ //certo
 	std::cout << "Maximo em age Certification: " << maximo << " | filme: " << filmeMaximo << std::endl;
 	std::cout << "--------- MIN ----------\n";
 	std::cout << "Minimo em age Certification: " << minimo << " | filme: " << filmeMinimo << std::endl;
-	std::cout << "--------- IMDB score e Média(AGE CERT) ----------\n";
+	std::cout << "--------- IMDB score e Mï¿½dia(AGE CERT) ----------\n";
 	std::cout << "filme: " << nomeFilme << std::endl;
 	std::cout << "Imdb do filme: " << imdbEntrada << " | media do ageCertification: " << media << std::endl;
 	std::cout << "Diferenca entre os dois: " << abs(imdbEntrada-media) << std::endl;

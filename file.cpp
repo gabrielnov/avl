@@ -3,6 +3,9 @@
 void readFile(ArvoreBST *bst, ArvoreAVL *avl){
 	std::string nome, cargoBase, cargoComissao, unidade, caminho;
     float salarioBruto;
+	int opAvl = 0, opBst = 0;
+	
+	int *ptrAvl = &opAvl, *ptrBst = &opBst;
 
 	std::cout << "Informe o caminho do arquivo a ser lido: ";
 	std::cin >> caminho;
@@ -24,22 +27,12 @@ void readFile(ArvoreBST *bst, ArvoreAVL *avl){
 	std::cout << "lendo linhas do arquivo " << caminho << "... " << std::endl;
 
     getline(f, line);
-	
-	int total = 0;
-	
 
     if (f.is_open()){
 	    while(getline(f, line) && line != ""){
 	    	substring(line, stringArray);
-			bool valid = true;
 			
-			for(int i = 0; i < 14; i++){
-				if (stringArray[i].size() == 0 )
-					valid = false;;
-			}
-			
-			
-			if (stringArray[0].size() < 3 || !valid){
+			if (stringArray[0].size() < 3){
 				continue;
 			}
 
@@ -61,19 +54,16 @@ void readFile(ArvoreBST *bst, ArvoreAVL *avl){
             t->setTmdbPopularity(stringArray[13]);
             t->setTmdbScore(stringArray[14]);
 	    	
-			bst->inserir(t->getId(), t);
-			avl->inserir(t);
-			total++;
-
-			if (stringArray[0] == "tm1003630"){
-				std::cout << "size: " << stringArray[9].size() << std::endl;
-			}
+			bst->inserir(t->getId(), t, ptrBst);
+			avl->inserir(t, ptrAvl);
 	    }
 
 	f.close();
 	}
 
-	std::cout << total << " linhas do arquivo lidas com sucesso!" << std::endl;
+	std::cout << "Dados lidos com sucesso!" << std::endl;
+	std::cout << "Total de comparacoes na AVL: " << opAvl << std::endl;
+	std::cout << "Total de comparacoes na BST: " << opBst << std::endl;
 }
 
 // substring inclui os campos do csv em um de string que ser� usado para construir uma instancia de Pessoa

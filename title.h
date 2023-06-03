@@ -179,20 +179,20 @@ class Title{
 
         void print(){
             std::cout << "id: " << id <<
-            " | title: " << title <<
-            " | showType: " << showType <<
-            " | description: " << description <<
-            " | releaseYear: " << releaseYear <<
-            " | ageCertification: " << ageCertification <<
-            " | runtime: " << runtime <<
-            " | genres: " << genres << 
-            " | productionCountries: " << productionCountries <<
-            " | seasons: " << seasons << 
-            " | imdbId: " << imdbId <<
-            " | imdbScore: " << imdbScore <<
-            " | imdbVotes: " << imdbVotes <<
-            " | tmdbPopularity: " << tmdbPopularity <<
-            " | tmdbScore: " << tmdbScore << "\n";
+            std::endl << " | title: " << title <<
+            std::endl << " | showType: " << showType <<
+            std::endl << " | description: " << description <<
+            std::endl << " | releaseYear: " << releaseYear <<
+            std::endl << " | ageCertification: " << ageCertification <<
+            std::endl << " | runtime: " << runtime <<
+            std::endl << " | genres: " << genres << 
+            std::endl << " | productionCountries: " << productionCountries <<
+            std::endl << " | seasons: " << seasons << 
+            std::endl << " | imdbId: " << imdbId <<
+            std::endl << " | imdbScore: " << imdbScore <<
+            std::endl << " | imdbVotes: " << imdbVotes <<
+            std::endl << " | tmdbPopularity: " << tmdbPopularity <<
+            std::endl << " | tmdbScore: " << tmdbScore << "\n";
         }
 };
 

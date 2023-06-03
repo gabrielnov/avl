@@ -15,8 +15,8 @@ public:
   bool isEmpty();
   int height();
   int qtNodes();
-  void inserir(Title *t);
-  void remove(std::string id);
+  void inserir(Title *t, int *op);
+  void remove(std::string id, int *op);
   void preOrder();
   void posOrder();
   void inOrder();
@@ -32,14 +32,14 @@ public:
   void analise5(std::string pais, AVLNode *no);
   void analise6(std::string year1, std::string year2, AVLNode *no);
   void analise7(AVLNode* no, int notas[], int *total);
-  AVLNode* pesquisar(std::string valor, AVLNode *no);
+  AVLNode* pesquisar(std::string valor, AVLNode *no, int *op);
   void posOrder(AVLNode *no);
 private:
   AVLNode *root;
   int height(AVLNode *);
   int qtNodes(AVLNode *);
-  AVLNode *inserir(AVLNode *, Title *);
-  AVLNode *remove(AVLNode *, std::string);
+  AVLNode *inserir(AVLNode *, Title *, int *);
+  AVLNode *remove(AVLNode *, std::string, int *);
   void preOrder(AVLNode *no);
   void inOrder(AVLNode *no);
   AVLNode *rotateR(AVLNode *);
@@ -50,7 +50,7 @@ private:
   AVLNode *rightRotate(AVLNode *y);
   void reverseOrder(AVLNode *);
   int maximo(int, int);
-  AVLNode *minimo(AVLNode *no);
+  AVLNode *minimo(AVLNode *no, int *op);
   bool isAVL(AVLNode *no);
   void print(AVLNode *no, int space);
 };

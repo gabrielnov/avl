@@ -39,11 +39,13 @@ int ArvoreAVL::height(AVLNode *no)
 	return no==NULL? -1 : no->getHeight();
 }
 
-AVLNode * ArvoreAVL::minimo(AVLNode* no) 
+AVLNode * ArvoreAVL::minimo(AVLNode* no, int *op) 
 { 
     AVLNode* current = no;     
-    while (current->getLeft() != NULL) 
+    while (current->getLeft() != NULL) {
+        *op += 1;
         current = current->getLeft(); 
+    }
     return current;
 }
 
@@ -68,25 +70,32 @@ int ArvoreAVL::qtNodes(AVLNode* no)
 	return qtleft + qtright + 1;
 }
 
-void ArvoreAVL::inserir (Title *t)
+void ArvoreAVL::inserir (Title *t, int *op)
 {
-    root = inserir(root,t);
+    root = inserir(root, t, op);
 }
 
-AVLNode* ArvoreAVL::inserir(AVLNode* node, Title *t)
+AVLNode* ArvoreAVL::inserir(AVLNode* node, Title *t, int *op)
 {
     if (node == NULL)
+    {
+        *op += 1;
        	return new AVLNode(t);
+     
+    }
     if (t->getId() < node->getData()->getId())
     {
-            node->setLeft(inserir(node->getLeft(), t));
-            if( height( node->getRight() ) - height( node->getLeft() ) == -2 ) 
+            node->setLeft(inserir(node->getLeft(), t, op));
+            if( height( node->getRight() ) - height( node->getLeft() ) == -2 )
             {
+                *op += 1;
                 if(  t->getId() < node->getLeft()->getData()->getId() ) 
                      {
+                        *op += 1;
                         node = rotateR( node ); 
                      }
                  else{ 
+                        *op += 1;
                         node = rotateLR( node ); 
                      }
             }
@@ -94,15 +103,17 @@ AVLNode* ArvoreAVL::inserir(AVLNode* node, Title *t)
     else
     {
         if (t->getId() > node->getData()->getId())
-            {
-                    node->setRight(inserir(node->getRight(),t));
+            {       
+                    *op += 1;
+                    node->setRight(inserir(node->getRight(),t, op));
                     if( height( node->getRight() ) - height( node->getLeft() ) == 2 ) //FB = HR - HL
                     {
+                        *op += 1;
                         if( t->getId() > node->getRight()->getData()->getId()) //Ao inserir o n� a direita, sub-�rvore da direita de node ter� FB > 0
                             node = rotateL( node ); //Rota��o Simples para Esquerda
                         else //Ao inserir o n� a esquerda, sub-�rvore da direita de node ter� FB < 0
                             node = rotateRL( node ); //Rota��o Dupla para Esquerda
-
+                        *op += 1;
                     }
 
             }
@@ -175,42 +186,52 @@ AVLNode * ArvoreAVL::rightRotate(AVLNode *y)
 
 
 // **** Metodo que remove um elemento da Arvore ****
-void ArvoreAVL::remove (std::string id)
+void ArvoreAVL::remove (std::string id, int *op)
 {
-    root = remove(root,id);
+    root = remove(root,id, op);
 }
 
-AVLNode* ArvoreAVL::remove(AVLNode* root, std::string key) 
+AVLNode* ArvoreAVL::remove(AVLNode* root, std::string key, int *op) 
 { 
+    *op += 1;
     if (root == NULL)         
         return nullptr;
   
-    if ( key < root->getData()->getId() ) 
-        root->setLeft(remove(root->getLeft(), key));    
-    else if( key > root->getData()->getId()) 
-        root->setRight(remove(root->getRight(), key)); 
+    if ( key < root->getData()->getId() ) {
+        *op += 1;
+        root->setLeft(remove(root->getLeft(), key, op));    
+    }
+    else if( key > root->getData()->getId()) {
+        *op += 1;
+        root->setRight(remove(root->getRight(), key, op)); 
+    }
     else
     { 
         if( (root->getLeft() == NULL) || (root->getRight() == NULL) ) //node com 1 filho
         { 
+            *op += 1;
             AVLNode *temp = root->getLeft() ? 
                         root->getLeft() : 
                         root->getRight(); 
             
             if (temp == NULL) 
             { 
+                *op += 1;
                 temp = root; 
                 root = NULL; 
             } 
-            else 
-            *root = *temp;                         
+            else {
+                *op += 1;
+                *root = *temp;                         
+            }
             free(temp); 
         } 
         else //node com 2 filhos
-        {              
-            AVLNode* temp = minimo(root->getRight()); //busca pelo menor dos maiores            
+        {       
+            *op += 1;       
+            AVLNode* temp = minimo(root->getRight(), op); //busca pelo menor dos maiores            
             root->setData(temp->getData());             
-            root->setRight(remove(root->getRight(),temp->getData()->getId())); 
+            root->setRight(remove(root->getRight(),temp->getData()->getId(),op)); 
         } 
     }
  
@@ -442,19 +463,24 @@ void ArvoreAVL::findMinAnaliseFilme(std::string procurar, float *minimo, AVLNode
 	}
 }
 
-AVLNode* ArvoreAVL::pesquisar(std::string valor, AVLNode *no){
+AVLNode* ArvoreAVL::pesquisar(std::string valor, AVLNode *no, int *op){
 	if(no->getData()->getId() == valor || no == nullptr){
+		*op += 1;
 		return no;
 	} else if (no->getData()->getId() > valor){
-		return pesquisar(valor, no->getLeft());
+		*op += 1;
+		return pesquisar(valor, no->getLeft(), op);
 	} else {
-		return pesquisar(valor, no->getRight());
+		*op += 1;
+		return pesquisar(valor, no->getRight(), op);
 	}
 }
 
 void ArvoreAVL::analise3(std::string id1, std::string id2, AVLNode *no){ //id do filme
-	AVLNode *temp1 = pesquisar(id1, no);
-	AVLNode *temp2 = pesquisar(id2, no);
+	int n = 0;
+	AVLNode *temp1 = pesquisar(id1, no, &n);
+	AVLNode *temp2 = pesquisar(id2, no, &n);
+    
 	std::cout << temp1->getData()->getTitulo() << " " << temp2->getData()->getTitulo();
 	
 	float imdb1 = stof(temp1->getData()->getImdbScore());
@@ -474,7 +500,8 @@ void ArvoreAVL::analise3(std::string id1, std::string id2, AVLNode *no){ //id do
 
 void ArvoreAVL::analise4(std::string id, AVLNode *no){ //certo
 //	posOrder(no);
-	AVLNode *temp = pesquisar(id, no);
+	int n = 0;
+	AVLNode *temp = pesquisar(id, no, &n);
 	std::string nomeFilme = temp->getData()->getTitulo();
 	std::string ageC = temp->getData()->getAgeCertification();
 	float imdbEntrada = std::stof(temp->getData()->getImdbScore());
@@ -502,19 +529,6 @@ void ArvoreAVL::analise4(std::string id, AVLNode *no){ //certo
 	std::cout << "Diferenca entre os dois: " << abs(imdbEntrada-media) << std::endl;
 	std::cout << "Diferenca Percentual entre os dois: " << (abs(imdbEntrada-media)/((imdbEntrada+media)/2))*100 << "%" << std::endl;
 }
-
- void ArvoreAVL::analise7(AVLNode* no, int notas[], int *total){
-    
-        if(no != NULL){
-            analise7(no->getLeft(), notas, total);
-            analise7(no->getRight(), notas, total);
-            
-            int nota = stoi(no->getData()->getImdbScore());
-            notas[nota] += 1;
-            (*total)++;
-        }
-    }
-
 
 void ArvoreAVL::analise5(std::string pais, AVLNode *no){ //pais
 	float maximo = 0, minimo, soma = 0, media, qntd = 0;
@@ -583,3 +597,15 @@ void ArvoreAVL::analise6(std::string year1, std::string year2, AVLNode *no){ //d
 	std::cout << "Diferenca entre as duas unidades: " << abs(minimo2-minimo1) << std::endl;
 	std::cout << "Diferenca Percentual de minimo entre as duas unidades: " << (abs(minimo2-minimo1)/((minimo2+minimo1)/2))*100 << "%" << std::endl;
 }
+
+void ArvoreAVL::analise7(AVLNode* no, int notas[], int *total){
+    
+        if(no != NULL){
+            analise7(no->getLeft(), notas, total);
+            analise7(no->getRight(), notas, total);
+            
+            int nota = stoi(no->getData()->getImdbScore());
+            notas[nota] += 1;
+            (*total)++;
+        }
+    }
